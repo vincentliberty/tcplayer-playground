@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <title>腾讯云视频点播示例</title>
+  <link href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.6.0/tcplayer.min.css" rel="stylesheet"/>
+
+  <!-- <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.8.0/libs/hls.min.1.1.6.js"></script> -->
+  <!-- <script src="http://127.0.0.1:8081/dist/hls.js"></script> -->
+  <!--播放器脚本文件-->
+  <!-- <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v5.2.0/tcplayer.v5.2.0.min.js"></script> -->
+  <!-- <script src="https://vincentlli-1306264703.cos.ap-nanjing.myqcloud.com/tcplayer/tcplayer.v4.8.0.js"></script> -->
+  <!-- <script src="https://webrtc-demo.myqcloud.com/pull-sdk/js/vconsole.min.js"></script> -->
+
+  <!-- <script src="http://127.0.0.1:8081/dist/tcplayer-safe-check-plugin.1.1.0.js"></script> -->
+  <script src="http://localhost:8080/dist/tcplayer.v5.3.1.min.js"></script>
+
+  
+
+  <script>
+
+  </script>
+
+ 
+  <style>
+    html,body{
+      margin: 0;
+      padding: 0;
+    }
+    .tcplayer {
+      margin: 0 auto;
+    }
+    @media screen and (max-width: 640px) {
+      #player-container-id {
+        width: 100%;
+        height: 270px;
+      }
+    }
+    /* 设置logo在高分屏的显示样式 */
+    @media only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 2) {
+      .tcp-logo-img {
+        width: 50%;
+      }
+    }
+    video {
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+<!-- 设置播放器容器 -->
+<video id="player-container-id" preload="auto" width="640" height="360" playsinline webkit-playsinline>
+</video>
+<button id="switch">切换</button>
+<!--
+注意事项：
+* 播放器容器必须为 video 标签
+* player-container-id 为播放器容器的ID，可自行设置
+* 播放器区域的尺寸请按需设置，建议通过 css 进行设置，通过css可实现容器自适应等效果
+* playsinline webkit-playsinline 这几个属性是为了在标准移动端浏览器不劫持视频播放的情况下实现行内播放，此处仅作示例，请按需使用
+* 设置 x5-playsinline 属性会使用 X5 UI 的播放器
+-->
+<script>
+  // var vConsole = new VConsole();
+
+
+//   videojs.plugin('myPlugin', function() {
+//   // 在插件初始化时执行的代码
+//   var player = this;
+
+//   // 在播放器准备就绪时执行的代码
+//   player.ready(function() {
+//     // 在播放器准备就绪时添加自定义按钮
+//     var myButton = player.controlBar.addChild('button', {
+//       text: 'My Plugin',
+//       // 在按钮点击时执行的代码
+//       onClick: function() {
+//         // 在控制台打印一条消息
+//         console.log('My Plugin button clicked!');
+//       }
+//     });
+
+//     // 在播放器销毁时移除自定义按钮
+//     player.on('dispose', function() {
+//       player.controlBar.removeChild(myButton);
+//     });
+//   });
+// });
+  var player = TCPlayer('player-container-id', { // player-container-id 为播放器容器ID，必须与html中一致
+    // autoplay: true,
+    // language: 'en',
+    // 1. 历史数据，无psign场景
+    // fileID: '5285890799710670616', // 请传入需要播放的视频filID 必须
+    // appID: '1400329073', // 请传入点播账号的appID 必须
+
+    // 2. 原始视频
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTg4NSwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJPcmlnaW5hbCJ9LCJ1cmxBY2Nlc3NJbmZvIjp7ImRvbWFpbiI6IjEzMDYyNjQ3MDMudm9kMi5teXFjbG91ZC5jb20iLCJzY2hlbWUiOiJIVFRQUyJ9fQ.6tX8MyAMYaupCJeyfhUCf_K-li7nZoISeSxEk34R-lw',
+
+    // 3. AES + widevine + fairplay 
+    // TODO:playcgi存在drmtoken覆盖问题，导致AES不可用，后端修复
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTkwNSwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyLCJ3aWRldmluZURlZmluaXRpb24iOjEzLCJmYWlyUGxheURlZmluaXRpb24iOjExfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.Ip_APIRM7oPyLGGdzdAyPmYs0H3fqtP_hDuCRaKfHy4',
+
+    // 4. AES + widevine 
+    // TODO:playcgi存在drmtoken覆盖问题，导致AES不可用，后端修复
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTkzMCwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyLCJ3aWRldmluZURlZmluaXRpb24iOjEzfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.v6Tnc9RozzluhDOmsj2pQ920CBevpvUXW0jvzySjmME',
+
+    // 5. AES + fairplay
+    // TODO:playcgi存在drmtoken覆盖问题，导致AES不可用，后端修复
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTk1NCwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyLCJmYWlyUGxheURlZmluaXRpb24iOjExfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.vRZS29srBfpGAVXiAixURviFJZel_Aq3jnC_V_bX7hk',
+    
+
+  // 客户drm 17 win + chrome 无法播放
+  // appID: '1258708431', // 请传入点播账号的appID (必须)
+  // fileID: '5285890818299311045', // 请传入需要播放的视频filID (必须)
+  // psign:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwY2ZnIjoiYWR2YW5jZURybVByZXNldCIsInVybEFjY2Vzc0luZm8iOnsidCI6IjY3QjRCOTQ0IiwidXMiOiIyZThiMDU5OGZkMzk0ZTIxYmNkNTg5YWNmMmM5Mzc4YiJ9LCJhcHBJZCI6MTI1ODcwODQzMSwiZXhwaXJlVGltZVN0YW1wIjoxNzM5ODk3MTU2LCJnaG9zdFdhdGVybWFya0luZm8iOnsidGV4dCI6IjE1OTAwNjcyMDk4LeWNkeW-ruWwj-W-kCJ9LCJjdXJyZW50VGltZVN0YW1wIjoxNzMyNjk3MTU2LCJmaWxlSWQiOiI1Mjg1ODkwODE4Mjk5MzExMDQ1In0.b78MaUVRASFUVchKdFNam2sv4JCoVWXYvZl02YJhGFE",
+
+    // 6. AES
+    fileID: '243791576943072647',
+    appID: '1306264703',
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTk3MSwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.FOcmChHfrGY9tYCDn20MSQi-IqvQ9U_U6qLNgx9MhLg',
+    // licenseUrl: 'https://license-test.vod2.myqcloud.com/test/license/testV2/1300054025_1/v_cube.license',
+    // licenseUrl: 'https://license-test.vod2.myqcloud.com/test/license/testV2/1251132654_1/v_cube.license',
+    // licenseUrl: 'https://vincentlli-1306264703.cos.ap-nanjing.myqcloud.com/tcplayer/vcube.license',
+    // 高级版  testmig-1306264703.cos.ap-guangzhou.myqcloud.com
+    // licenseUrl: 'https://license.vod2.myqcloud.com/license/v2/1306264703_1/v_cube.license',
+    // licenseUrl: 'https://license.vod2.myqcloud.com/license/v2/1256172159_1/v_cube.license',
+    // licenseUrl: 'https://license.vod2.myqcloud.com/license/v2/1306264703_1/v_cube.license',
+    licenseUrl: 'https://license.vod2.myqcloud.com/license/v2/1256172159_1/v_cube.license', // 通配符
+    controlBar: {
+      fullscreenRotate: true,
+      playbackRateMenuButton: false,
+    },
+    
+
+    // 基础版
+    // https://license-test.vod2.myqcloud.com/test/license/testV2/1251132654_1/v_cube.license
+    // 高级版
+    // https://license-test.vod2.myqcloud.com/test/license/testV2/1251132654_1/v_cube.license
+    // licenseUrl: 'https://license-test.vod2.myqcloud.com/test/license/testV2/1300054025_1/v_cube.license',
+    // licenseUrl: 'https://vincentlli-1306264703.cos.ap-nanjing.myqcloud.com/tcplayer/vcube.license',
+  
+    // 7. widevine
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ3MDk3MywiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJ3aWRldmluZURlZmluaXRpb24iOjEzfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.mpuMSDumwNh4RQZVJOxya7z12jQfIWsVt_8ByfGS3r0',
+
+    // 8. fairplay
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ3MTAwMywiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJmYWlyUGxheURlZmluaXRpb24iOjExfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.ysDF4VupO8A2zRD_3uD6uFSbw_NQwhSgJTQyxj5oARI',
+    
+    // 9. 不加密HLS
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ3MDAwNiwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJSYXdBZGFwdGl2ZSIsInJhd0FkYXB0aXZlRGVmaW5pdGlvbiI6MTB9LCJ1cmxBY2Nlc3NJbmZvIjp7ImRvbWFpbiI6IjEzMDYyNjQ3MDMudm9kMi5teXFjbG91ZC5jb20iLCJzY2hlbWUiOiJIVFRQUyJ9fQ.-yxAj1SBp-4QK7sC5Sz7E6gFuqRgY06vbN1Nkto0GQA',
+    
+    // fileID: '3270835010468833724',
+    // appID: '1500012967',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTUwMDAxMjk2NywiZmlsZUlkIjoiMzI3MDgzNTAxMDQ2ODgzMzcyNCIsImN1cnJlbnRUaW1lU3RhbXAiOjE2ODkwNDc4ODUsImNvbnRlbnRJbmZvIjp7ImF1ZGlvVmlkZW9UeXBlIjoiUHJvdGVjdGVkQWRhcHRpdmUiLCJkcm1BZGFwdGl2ZUluZm8iOnsid2lkZXZpbmVEZWZpbml0aW9uIjoxNDQ0Njc5fX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTUwMDAxMjk2Ny52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFAifX0.2shCzGjOrRQF_oa5SpBckm08hvX0GhKw6r-K-0K0thc',
+
+    // 10. 不加密DASH
+    // fileID: '243791576943072647',
+    // appID: '1306264703',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ3MDAxOSwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJSYXdBZGFwdGl2ZSIsInJhd0FkYXB0aXZlRGVmaW5pdGlvbiI6MjB9LCJ1cmxBY2Nlc3NJbmZvIjp7ImRvbWFpbiI6IjEzMDYyNjQ3MDMudm9kMi5teXFjbG91ZC5jb20iLCJzY2hlbWUiOiJIVFRQUyJ9fQ.3JcFHAKh9cTajDM1r0uNquuI1q3J4Kk1--X5ZDG5jck',
+
+    // 11. AES 测试loadVideoByID
+    // appID: '1500005692',
+    // fileID: '387702307006254554',
+    // psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTUwMDAwNTY5MiwiZmlsZUlkIjoiMzg3NzAyMzA3MDA2MjU0NTU0IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDMxMDM1MiwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTUwMDAwNTY5Mi52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFAifX0.PFwxL9NNs_gyrR5U3dxwzeip3wZT4M-Fvtd0H2WkjnA',
+    webrtcConfig: {
+        connectRetryCount: 10,
+        connectRetryDelay: 2,
+        signalDomain: {
+          protocol: 'http', // todo 现网发布要改
+          domain: 'webrtc-play-dev.media-cast.vod-qcloud.com', // todo 现网发布要改
+          query: false,
+        },
+      },
+
+    //其他参数请在开发文档中查看
+    plugins: {
+      // SafeCheck: {
+        
+      // },
+      ContinuePlay: {
+        // auto: true // 是否在播放时自动续播
+      },
+      ProgressMarker: true,
+      ContextMenu: {
+        statistic: true,
+        levelSwitch: {
+          open: true, // 打开切换提示
+          // switchingText: '开始', // 开始切换时文案
+          // switchedText: '成功', // 切换成功时文案
+          // switchErrorText: '失败', // 切换失败时文案
+        }
+      }
+    }
+  });
+
+
+
+
+  // setTimeout(() => {
+  //   console.log('player ori', player);
+  //   player.loadVideoByID({
+  //     fileID: '243791576943072647',
+  //     appID: '1306264703',
+  //     psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ2OTk3MSwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.FOcmChHfrGY9tYCDn20MSQi-IqvQ9U_U6qLNgx9MhLg',
+  //   });
+  // }, 3000);
+  // player.src('http://1305533787.vod2.myqcloud.com/6bfcd0cavodtranssgp1305533787/df5fac093270835010461032124/v.f100010.mp4');
+  
+  // player.src('webrtc://global-lebtest-play.myqcloud.com/live/lebtest?txSecret=f22a813b284137ed10d3259a7b5c224b&txTime=69f1eb8c');
+
+  // player.src('http://vincent.pub/live/sei.m3u8');
+  // player.src('https://1305071164.vod2.myqcloud.com/0500fb7evodcq1305071164/76cbdeb53270835009987527597/playlist_eof.m3u8');
+  // player.src('https://68789.liveplay.myqcloud.com/live/webrtc_demo_1686626553419.flv');
+
+
+  // player.ready(function() {
+  //   debugger
+  //   player.tech_.hlsProvider.hls.removeLevel(2)
+  // });
+
+  player.on('waiting', function(e) {
+    console.log('waiting');
+  });
+  player.on('error', function(e) {
+    console.log('e', e);
+  });
+
+  player.on('playcgistart', function(e) {
+    console.log('playcgistart', e);
+  });
+
+  player.on('playcgiend', function(e) {
+    console.log('playcgiend', e);
+  });
+
+  player.on('pause', function(e) {
+    console.log('pause');
+  });
+
+  player.on('error', function() {
+    console.log(1);
+  });
+
+  player.on('error', function() {
+    console.log(2);
+  });
+
+
+  player.on('licenseparsed', function(e) {
+    console.log('licenseparsed', e.data);
+  });
+
+  document.getElementById('switch').addEventListener('click', function() {
+    player.src('webrtc://68789.liveplay.myqcloud.com/live/webrtc_demo_1688439945507');
+    // player.loadVideoByID({
+    //   appID: '1500005692',
+    //   fileID: '387702307006254554',
+    //   psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTUwMDAwNTY5MiwiZmlsZUlkIjoiMzg3NzAyMzA3MDA2MjU0NTU0IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDMxMDM1MiwiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJwcml2YXRlRW5jcnlwdGlvbkRlZmluaXRpb24iOjEyfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTUwMDAwNTY5Mi52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFAifX0.PFwxL9NNs_gyrR5U3dxwzeip3wZT4M-Fvtd0H2WkjnA',
+    // });
+  });
+</script>
+</body>
+</html>

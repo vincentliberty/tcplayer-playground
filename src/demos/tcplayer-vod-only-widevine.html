@@ -1,0 +1,104 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <title>腾讯云视频点播示例</title>
+  <link href="https://tcsdk.com/player/tcplayer/release/v5.3.1/tcplayer.min.css" rel="stylesheet"/>
+  <script src="https://tcsdk.com/player/tcplayer/release/v5.3.1/tcplayer.v5.3.1.min.js"></script>
+
+  <!-- <script src="https://testmig-1306264703.cos.ap-guangzhou.myqcloud.com/wm/hls.js"></script> -->
+
+    <!-- <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v5.1.0/tcplayer.v5.1.0.min.js"></script> -->
+
+    <!-- <script src="https://testmig-1306264703.cos.ap-guangzhou.myqcloud.com/drm3/tcplayer.v4.5.1.js"></script> -->
+
+    <!-- <script src="http://localhost:8080/dist/tcplayer.v5.3.1.js"></script> -->
+
+  <script>
+
+  </script>
+
+ 
+  <style>
+    html,body{
+      margin: 0;
+      padding: 0;
+    }
+    .tcplayer {
+      margin: 0 auto;
+    }
+    @media screen and (max-width: 640px) {
+      #player-container-id {
+        width: 100%;
+        height: 100vh;
+      }
+    }
+    /* 设置logo在高分屏的显示样式 */
+    @media only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 2) {
+      .tcp-logo-img {
+        width: 50%;
+      }
+    }
+    video {
+      object-fit: cover;
+    }
+
+    #mask {
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      position: absolute;
+      top: 20px;
+    }
+
+    .anti-recording-noise {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.03), /* 3% 透明度噪点 */
+        rgba(255, 255, 255, 0.03) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: shift 0.1s infinite; /* 100ms 变化一次 */
+    }
+    @keyframes shift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(4px, 4px); }
+    }
+  </style>
+</head>
+<body>
+<!-- 设置播放器容器 -->
+<video id="player-container-id" preload="auto" width="2160" height="1080" loop playsinline webkit-playsinline>
+</video>
+<div id="mask"></div>
+<!--
+注意事项：
+* 播放器容器必须为 video 标签
+* player-container-id 为播放器容器的ID，可自行设置
+* 播放器区域的尺寸请按需设置，建议通过 css 进行设置，通过css可实现容器自适应等效果
+* playsinline webkit-playsinline 这几个属性是为了在标准移动端浏览器不劫持视频播放的情况下实现行内播放，此处仅作示例，请按需使用
+* 设置 x5-playsinline 属性会使用 X5 UI 的播放器
+-->
+<script>  
+
+
+  var player = TCPlayer('player-container-id', { // player-container-id 为播放器容器ID，必须与html中一致
+    fileID: '243791576943072647',
+    appID: '1306264703',
+    psign: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6MTMwNjI2NDcwMywiZmlsZUlkIjoiMjQzNzkxNTc2OTQzMDcyNjQ3IiwiY3VycmVudFRpbWVTdGFtcCI6MTY3MDQ3MDk3MywiY29udGVudEluZm8iOnsiYXVkaW9WaWRlb1R5cGUiOiJQcm90ZWN0ZWRBZGFwdGl2ZSIsImRybUFkYXB0aXZlSW5mbyI6eyJ3aWRldmluZURlZmluaXRpb24iOjEzfX0sInVybEFjY2Vzc0luZm8iOnsiZG9tYWluIjoiMTMwNjI2NDcwMy52b2QyLm15cWNsb3VkLmNvbSIsInNjaGVtZSI6IkhUVFBTIn19.mpuMSDumwNh4RQZVJOxya7z12jQfIWsVt_8ByfGS3r0',
+
+    licenseUrl: 'https://license.vod2.myqcloud.com/license/v2/1306264703_1/v_cube.license',    
+  });
+
+  player.on('licenseparsed', function(e) {
+    console.log('licenseparsed', e.data);
+  });
+
+</script>
+</body>
+</html>
