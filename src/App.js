@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from "@monaco-editor/react";
 import './App.css';
-import fileIdDemo from './demos/tcplayer-vod-all.html';
+import fileIdDemo from './demos/basic/tcplayer-url.html';
 import widevineDemo from './demos/tcplayer-vod-only-widevine.html';
-
-console.log('demoContent', fileIdDemo);
 
 const menuStructure = {
   '基础播放': {
@@ -169,44 +167,6 @@ function App() {
     }
   }, [code]);
 
-  // 预设的代码示例
-  const codeExamples = {
-    'url-play': `const player = new SuperPlayer({
-    container: '#container',
-});
-
-player.play({
-    url: 'https://example.com/video.mp4',
-});
-
-window.player = player;`,
-    'vid-vod': `const player = new SuperPlayer({
-    container: '#container',
-});
-
-player.play({
-    vid: '4564972819220421305',
-    playDefinition: '720P',
-});`,
-    'vid-live': `const player = new SuperPlayer({
-    container: '#container',
-    live: true,
-});
-
-player.play({
-    vid: 'live-vid-123456',
-});`,
-    'webrtc': `const player = new SuperPlayer({
-    container: '#container',
-    live: true,
-    webrtc: true,
-});
-
-player.play({
-    url: 'webrtc://example.com/live/stream',
-});`,
-  };
-
   // 更新初始展开状态
   const [expandedGroups, setExpandedGroups] = useState({
     tcPlayer: true,            // 改为 tcPlayer
@@ -235,9 +195,6 @@ player.play({
           </div>
         </div>
         <div className="header-right">
-          {/* <div className="search-box">
-            <input type="search" placeholder="搜索" />
-          </div> */}
           <nav className="nav-links">
             <a href="#" className="nav-link">License 申请</a>
             <a href="#" className="nav-link">代码库</a>
@@ -291,18 +248,6 @@ player.play({
           </nav>
         </aside>
         <main className="content">
-          {/* <div className="editor-header">
-            <div className="editor-tabs">
-              <span className="tab active">Plugins</span>
-              <span className="tab">控制栏</span>
-              <span className="tab">右键菜单</span>
-              <span className="tab">错误码</span>
-              <span className="tab">错误页</span>
-              <span className="tab">弹幕</span>
-              <span className="tab">动态水印</span>
-              <span className="tab">Loading</span>
-            </div>
-          </div> */}
           <div className="editor-container">
             <Editor
               height="100%"
@@ -341,12 +286,6 @@ player.play({
               title="Preview"
               sandbox="allow-scripts allow-same-origin"
             />
-          </div>
-          <div className="preview-docs">
-            <h3>说明文档</h3>
-            <div className="preview-docs-content">
-              这里是示例说明文档内容...
-            </div>
           </div>
         </aside>
       </div>
